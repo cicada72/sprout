@@ -1,7 +1,6 @@
-package com.momoc.sprout.configuration.filereader.impl;
+package com.momoc.sprout.configuration.filereader;
 
 import com.momoc.sprout.common.ClassFileFinder;
-import com.momoc.sprout.configuration.filereader.ConfigFileReader;
 import org.apache.log4j.Logger;
 
 import java.io.File;

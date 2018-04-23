@@ -1,7 +1,6 @@
 package com.momoc.sprout.configuration.filereader;
 
 import com.momoc.sprout.configuration.basictype.ConfigFileReaderType;
-import com.momoc.sprout.configuration.filereader.impl.PropertiesReader;
 import org.apache.log4j.Logger;
 
 public class ConfigFileReaderFactory {
