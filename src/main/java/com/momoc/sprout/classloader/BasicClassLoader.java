@@ -18,8 +18,12 @@ public class BasicClassLoader implements SproutClassLoader {
     @Override
     public Class<?> loadClass(String className, boolean isInit) {
         Class<?> clazz = null;
-
-        return null;
+        try{
+            clazz = Class.forName(className, isInit, this.getClassLoader());
+        } catch (ClassNotFoundException e) {
+            logger.error(e);
+        }
+        return clazz;
     }
 
     @Override
