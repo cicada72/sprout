@@ -1,11 +1,16 @@
 package com.momoc.sprout.common;
 
 import com.momoc.sprout.classloader.exception.IllegalPackageNameException;
+import org.apache.log4j.Logger;
 
-import java.io.File;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class FileScanner {
+
+    private static final Logger logger = Logger.getLogger(FileScanner.class);
 
     public static File findTargetFileByPath(String basePath, String targetPath){
         File targetFile = null;
@@ -60,7 +65,46 @@ public class FileScanner {
         return path;
     }
 
-    private static String pretreatmentPath(String originPath){
+    public static byte[] getBytes(InputStream inputStream){
+        byte[] bytes = null;
+        if(inputStream != null){
+            try{
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                int bufferSize = 4096;
+                byte[] buffer = new byte[bufferSize];
+                int bytesNumRead;
+                while ((bytesNumRead = inputStream.read(buffer)) != -1) {
+                    byteArrayOutputStream.write(buffer, 0, bytesNumRead);
+                }
+                bytes = byteArrayOutputStream.toByteArray();
+            } catch (IOException e) {
+                logger.error(e);
+            } finally {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    logger.error(e);
+                }
+            }
+        }
+        return bytes;
+    }
+
+    public static byte[] getBytes(File file){
+        byte[] bytes = null;
+        if(file.exists()){
+            InputStream input;
+            try{
+                input = new FileInputStream(file);
+                bytes = getBytes(input);
+            } catch (IOException e) {
+                logger.error(e);
+            }
+        }
+        return bytes;
+    }
+
+    public static String pretreatmentPath(String originPath){
         String path = "";
         if(originPath != null){
             path = originPath;
