@@ -48,6 +48,18 @@ public class FileScanner {
         return target;
     }
 
+    public static String convertPackageToPath(String packageName) throws IllegalPackageNameException {
+        String path = null;
+        if(packageName != null){
+            String pattern = "^([a-zA-Z]+[.][a-zA-Z]+)[.]*.*"; //非字母开头，以点号分割，最少两段的包名
+            if(!Pattern.matches(pattern, packageName)){
+                throw new IllegalPackageNameException(packageName);
+            }
+            path = packageName.replaceAll("[.]", "/");
+        }
+        return path;
+    }
+
     private static String pretreatmentPath(String originPath){
         String path = "";
         if(originPath != null){
@@ -61,18 +73,6 @@ public class FileScanner {
             if(path.endsWith("/")){
                 path = path.substring(0, path.length() - 1);
             }
-        }
-        return path;
-    }
-
-    public static String convertPackageToPath(String packageName) throws IllegalPackageNameException {
-        String path = null;
-        if(packageName != null){
-            String pattern = "^([a-zA-Z]+[.][a-zA-Z]+)[.]*.*"; //非字母开头，以点号分割，最少两段的包名
-            if(!Pattern.matches(pattern, packageName)){
-                throw new IllegalPackageNameException(packageName);
-            }
-            path = packageName.replaceAll("[.]", "/");
         }
         return path;
     }

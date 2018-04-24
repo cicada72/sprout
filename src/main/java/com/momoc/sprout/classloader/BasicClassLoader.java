@@ -7,43 +7,41 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.util.Set;
-import java.util.regex.Pattern;
 
-public class BasicClassLoader implements SproutClassLoader {
+public class BasicClassLoader extends ClassLoader {
 
     private static final Logger logger = Logger.getLogger(BasicClassLoader.class);
 
-    @Override
-    public ClassLoader getClassLoader() {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        logger.info("Get class loader from the current thread:" + classLoader.getName());
-        return classLoader;
+    private BasicClassLoader(){
+        super(Thread.currentThread().getContextClassLoader());
     }
 
-    @Override
-    public Class<?> loadClass(String className, boolean isInit) {
+    public static BasicClassLoader getClassLoader(){
+        return new BasicClassLoader();
+    }
+
+
+    protected Class<?> loadClass(String className, byte[] bytes, int off, int len){
         Class<?> clazz = null;
-        try{
-            clazz = Class.forName(className, isInit, this.getClassLoader());
-            logger.info("Load class:" + className + ", IsInitialize:" + isInit);
-        } catch (ClassNotFoundException e) {
-            logger.error("Load class failed:" + className + ", IsInitialize:" + isInit, e);
+        if(bytes != null){
+            clazz = defineClass(className, bytes, off, len);
         }
         return clazz;
     }
 
-    @Override
     public Set<Class<?>> getClassesByPackage(String packageName) throws IllegalPackageNameException {
+        File packageFolder = this.getPackageFolderInClassPath(packageName);
 
         return null;
     }
 
-    private File getPackageFolderInClassPath(String packageName) throws IllegalPackageNameException {
-        File packageFolder = null;
-        String classPath = ClassFileFinder.getClassFolderPath(BasicClassLoader.class);
-        File classPathFolder = new File(classPath);
-        String packagePath = FileScanner.convertPackageToPath(packageName);
 
+
+    private File getPackageFolderInClassPath(String packageName) throws IllegalPackageNameException {
+        File packageFolder;
+        String classPath = ClassFileFinder.getClassFolderPath(BasicClassLoader.class);
+        String packagePath = FileScanner.convertPackageToPath(packageName);
+        packageFolder = FileScanner.findTargetFileByPath(classPath, packagePath);
         return packageFolder;
     }
 
