@@ -29,8 +29,9 @@ public class ClassFileFinder {
 
     private static File getClassPathFile(Class clazz) {
         File file = getClassFile(clazz);
-        for (int i = 0, count = clazz.getName().split("[.]").length; i < count; i++)
+        for (int i = 0, count = clazz.getName().split("[.]").length; i < count; i++){
             file = file.getParentFile();
+        }
         if (file.getName().toUpperCase().endsWith(".JAR!")) {
             file = file.getParentFile();
         }
