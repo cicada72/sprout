@@ -13,8 +13,8 @@ public class SproutApplication {
 
         ConfigContext configContext = new ConfigContext();
 
-        File f = FileScanner.findTargetFileByName("/Users/chengmoran/dev/github/sprout/target/classes",
-                "classes");
+        File f = FileScanner.findTargetFileByPath("/Users/chengmoran/dev/github/sprout/target/classes",
+                FileScanner.convertPackageToPath("com.momoc.sprout"));
         logger.info(f.getAbsolutePath());
     }
 }

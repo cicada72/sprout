@@ -2,6 +2,7 @@ package com.momoc.sprout.classloader;
 
 import com.momoc.sprout.classloader.exception.IllegalPackageNameException;
 import com.momoc.sprout.common.ClassFileFinder;
+import com.momoc.sprout.common.FileScanner;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -41,20 +42,9 @@ public class BasicClassLoader implements SproutClassLoader {
         File packageFolder = null;
         String classPath = ClassFileFinder.getClassFolderPath(BasicClassLoader.class);
         File classPathFolder = new File(classPath);
-        String[] packagePath = this.convertPackageToPath(packageName);
+        String packagePath = FileScanner.convertPackageToPath(packageName);
 
         return packageFolder;
     }
 
-    private String[] convertPackageToPath(String packageName) throws IllegalPackageNameException {
-        String[] path = null;
-        if(packageName != null){
-            String pattern = "^([a-zA-Z]+[.][a-zA-Z]+)[.]*.*"; //非字母开头，以点号分割，最少两段的包名
-            if(!Pattern.matches(pattern, packageName)){
-                throw new IllegalPackageNameException(packageName);
-            }
-            path = packageName.replaceAll("[.]", "/").split("/");
-        }
-       return path;
-    }
 }
