@@ -36,7 +36,7 @@ public class BasicClassLoader extends ClassLoader {
         return clazz;
     }
 
-    public Set<Class<?>> getClassesByPackage(String packageName) throws IllegalPackageNameException {
+    public Set<Class<?>> getClassesByPackage(String packageName) throws IllegalPackageNameException, ClassNotFoundException {
         Set<Class<?>> classes = new HashSet<>();
         File packageFolder = this.getPackageFolderInClassPath(packageName);
         JFileReader jFileReader = new JFileReader();
