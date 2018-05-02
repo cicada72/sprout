@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.util.*;
 
-public class BasicClassLoader extends ClassLoader {
+public class BasicClassLoader extends ClassLoader implements SproutClassLoader {
 
     private static final Logger logger = Logger.getLogger(BasicClassLoader.class);
 
@@ -36,7 +36,7 @@ public class BasicClassLoader extends ClassLoader {
         return clazz;
     }
 
-    public Set<Class<?>> getClassesByPackage(String packageName) throws IllegalPackageNameException, ClassNotFoundException {
+    public Set<Class<?>> getClassesByPackage(String packageName) throws IllegalPackageNameException {
         Set<Class<?>> classes = new HashSet<>();
         File packageFolder = this.getPackageFolderInClassPath(packageName);
         JFileReader jFileReader = new JFileReader();
