@@ -2,6 +2,9 @@ package com.momoc.sprout.bean;
 
 import com.momoc.sprout.annotation.Controller;
 import com.momoc.sprout.annotation.Service;
+import com.momoc.sprout.classloader.SproutClassLoader;
+import com.momoc.sprout.classloader.exception.IllegalPackageNameException;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,6 +26,13 @@ public class BeanContainer {
 
     public static BeanContainer build(){
         return beanContainer;
+    }
+
+    public void open(SproutClassLoader classLoader, String packageName) throws IllegalPackageNameException {
+        BeanContainer beanContainer = BeanContainer.build();
+        Set<Class<?>> classSet = classLoader.getClassesByPackage(packageName);
+        beanContainer.setAllClassSet(classSet);
+        beanContainer.classifyBean();
     }
 
     public void close(){
